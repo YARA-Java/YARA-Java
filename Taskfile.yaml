@@ -10,6 +10,8 @@ env:
   PROJECT_ROOT: "{{.PROJECT_ROOT}}"
   YARA_VERSION: "v4.2.3"
   JTREG_VERSION: "jtreg-7.1+1"
+  LLVM_HOME: "{{.PROJECT_ROOT}}/libs/llvm"
+  JTREG_HOME: "{{.PROJECT_ROOT}}/submodules/jtreg/build/images/jtreg"
 
 includes:
   llvm:

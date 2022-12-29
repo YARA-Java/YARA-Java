@@ -4,4 +4,8 @@ tasks:
   build:
     dir: submodules/jextract
     cmds:
-      - gradle -Dorg.gradle.java.home="${GRADLE_JAVA_HOME}" -Pjdk20_home="${JAVA_HOME}" -Pllvm_home="$PROJECT_ROOT/libs/llvm" clean verify
+      - gradle -Dorg.gradle.java.home="${GRADLE_JAVA_HOME}" -Pjdk20_home="${JAVA_HOME}" -Pllvm_home="${LLVM_HOME}" clean verify
+  test:
+    dir: submodules/jextract
+    cmds:
+      - gradle -Dorg.gradle.java.home="${GRADLE_JAVA_HOME}" -Pjdk20_home="${JAVA_HOME}" -Pllvm_home="${LLVM_HOME}" -Pjtreg_home="${JTREG_HOME}" jtreg
