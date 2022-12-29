@@ -5,6 +5,8 @@ env:
   JTREG_VERSION: "jtreg-7.1+1"
 
 includes:
+  llvm:
+    taskfile: ./tasks/llvm/Taskfile.yaml
   jtreg:
     taskfile: ./tasks/jtreg/Taskfile.yaml
 
