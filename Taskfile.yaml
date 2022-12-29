@@ -5,6 +5,10 @@ dotenv: ['.env']
 vars:
   PROJECT_ROOT:
     sh: "echo $PWD"
+  YARA_JAVA_ROOT: "{{.PROJECT_ROOT}}/yara-java"
+  YARA_JAVA_SRC: "{{.YARA_JAVA_ROOT}}/src/main/java"
+  YARA_JAVA_RESOURCES: "{{.YARA_JAVA_ROOT}}/src/main/resources"
+  YARA_HEADERS: "{{.PROJECT_ROOT}}/submodules/yara/libyara/include"
 
 env:
   PROJECT_ROOT: "{{.PROJECT_ROOT}}"
@@ -12,6 +16,10 @@ env:
   JTREG_VERSION: "jtreg-7.1+1"
   LLVM_HOME: "{{.PROJECT_ROOT}}/libs/llvm"
   JTREG_HOME: "{{.PROJECT_ROOT}}/submodules/jtreg/build/images/jtreg"
+  YARA_JAVA_ROOT: "{{.YARA_JAVA_ROOT}}"
+  YARA_JAVA_SRC: "{{.YARA_JAVA_SRC}}"
+  YARA_JAVA_RESOURCES: "{{.YARA_JAVA_RESOURCES}}"
+  YARA_HEADERS: "{{.YARA_HEADERS}}"
 
 includes:
   llvm:
