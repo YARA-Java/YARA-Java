@@ -1,0 +1,7 @@
+version: 3
+
+tasks:
+  build:
+    dir: submodules/jextract
+    cmds:
+      - gradle -Dorg.gradle.java.home="${GRADLE_JAVA_HOME}" -Pjdk20_home="${JAVA_HOME}" -Pllvm_home="$PROJECT_ROOT/libs/llvm" clean verify

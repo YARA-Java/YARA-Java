@@ -1,6 +1,13 @@
 version: 3
 
+dotenv: ['.env']
+
+vars:
+  PROJECT_ROOT:
+    sh: "echo $PWD"
+
 env:
+  PROJECT_ROOT: "{{.PROJECT_ROOT}}"
   YARA_VERSION: "v4.2.3"
   JTREG_VERSION: "jtreg-7.1+1"
 
@@ -9,6 +16,8 @@ includes:
     taskfile: ./tasks/llvm/Taskfile.yaml
   jtreg:
     taskfile: ./tasks/jtreg/Taskfile.yaml
+  jextract:
+    taskfile: ./tasks/jextract/Taskfile.yaml
 
 tasks:
   yara-submodule:
