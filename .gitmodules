@@ -1,0 +1,3 @@
+[submodule "submodules/yara"]
+	path = submodules/yara
+	url = https://github.com/YARA-Java/yara.git
