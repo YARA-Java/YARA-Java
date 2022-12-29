@@ -17,3 +17,7 @@ tasks:
     cmds:
       - git submodule add --force https://github.com/YARA-Java/jtreg.git submodules/jtreg
       - git -C submodules/jtreg checkout $JTREG_VERSION
+  jextract-submodule:
+    cmds:
+      - git submodule add --force https://github.com/YARA-Java/jextract.git submodules/jextract
+      - git -C submodules/jextract checkout jdk20

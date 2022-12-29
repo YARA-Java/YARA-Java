@@ -4,3 +4,6 @@
 [submodule "submodules/jtreg"]
 	path = submodules/jtreg
 	url = https://github.com/YARA-Java/jtreg.git
+[submodule "submodules/jextract"]
+	path = submodules/jextract
+	url = https://github.com/YARA-Java/jextract.git
