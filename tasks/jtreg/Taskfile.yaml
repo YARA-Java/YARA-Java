@@ -1,0 +1,8 @@
+version: 3
+
+tasks:
+  build:
+    dir: ./submodules/jtreg
+    cmds:
+      - chmod +x make/build.sh
+      - make/build.sh

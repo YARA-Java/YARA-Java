@@ -4,6 +4,10 @@ env:
   YARA_VERSION: "v4.2.3"
   JTREG_VERSION: "jtreg-7.1+1"
 
+includes:
+  jtreg:
+    taskfile: ./tasks/jtreg/Taskfile.yaml
+
 tasks:
   yara-submodule:
     cmds:
