@@ -2,10 +2,14 @@ version: 3
 
 env:
   YARA_VERSION: "v4.2.3"
+  JTREG_VERSION: "jtreg-7.1+1"
 
 tasks:
   yara-submodule:
     cmds:
       - git submodule add --force https://github.com/YARA-Java/yara.git submodules/yara
       - git -C submodules/yara checkout $YARA_VERSION
-
+  jtreg-submodule:
+    cmds:
+      - git submodule add --force https://github.com/YARA-Java/jtreg.git submodules/jtreg
+      - git -C submodules/jtreg checkout $JTREG_VERSION

@@ -1,3 +1,6 @@
 [submodule "submodules/yara"]
 	path = submodules/yara
 	url = https://github.com/YARA-Java/yara.git
+[submodule "submodules/jtreg"]
+	path = submodules/jtreg
+	url = https://github.com/YARA-Java/jtreg.git
