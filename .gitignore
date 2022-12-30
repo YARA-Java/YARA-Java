@@ -501,4 +501,5 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/c,java,maven,gradle,python,intellij+all,jetbrains+all,eclipse
 
 .idea
+*.iml
 libs
