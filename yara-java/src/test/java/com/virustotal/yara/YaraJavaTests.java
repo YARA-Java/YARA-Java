@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -144,6 +143,31 @@ public class YaraJavaTests {
             Assertions.assertEquals(ERROR_SUCCESS(), rulesDestroyed);
 
             yr_compiler_destroy(compiler);
+        }
+    }
+
+    @Test
+    public void testYaraScannerCreateAndDestroy(){
+        try (Arena arena = Arena.openConfined()){
+            MemorySegment yaraRulesFilename$ = arena.allocateUtf8String(YARA_RULES_BIN_DOC_DIR + "/yara-rules.yara.bin"); // char*
+            MemorySegment yaraRules$$ = arena.allocate(C_POINTER); // YR_RULES**
+
+            int loaded = yr_rules_load(yaraRulesFilename$, yaraRules$$);
+            Assertions.assertEquals(ERROR_SUCCESS(), loaded);
+
+            MemorySegment yaraRules$ = yaraRules$$.get(C_POINTER, 0); // YR_RULES*
+
+            MemorySegment yaraScanner$$ = arena.allocate(C_POINTER); // YR_SCANNER**
+
+            int scannerCreated = yr_scanner_create(yaraRules$, yaraScanner$$);
+            Assertions.assertEquals(ERROR_SUCCESS(), scannerCreated);
+
+            MemorySegment yaraScanner$ = yaraScanner$$.get(C_POINTER, 0); // YR_SCANNER*
+
+            int rulesDestroyed = yr_rules_destroy(yaraRules$);
+            Assertions.assertEquals(ERROR_SUCCESS(), rulesDestroyed);
+
+            yr_scanner_destroy(yaraScanner$);
         }
     }
 
