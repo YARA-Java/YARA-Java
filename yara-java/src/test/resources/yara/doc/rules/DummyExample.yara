@@ -2,7 +2,7 @@
 YARA rules are easy to write and understand, and they have a syntax that resembles the C language.
 Here is the simplest rule that you can write for YARA, which does absolutely nothing:
 */
-rule dummy
+rule DummyExample
 {
     condition:
         false
