@@ -22,6 +22,8 @@ env:
   YARA_HEADERS: "{{.YARA_HEADERS}}"
 
 includes:
+  yara:
+    taskfile: ./tasks/yara/Taskfile.yaml
   llvm:
     taskfile: ./tasks/llvm/Taskfile.yaml
   jtreg:

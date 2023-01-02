@@ -1,0 +1,22 @@
+version: 3
+
+tasks:
+  build-tools:
+    cmds:
+      - sudo apt-get install --yes automake libtool make gcc pkg-config
+  compile:
+    dir: submodules/yara
+    cmds:
+      - ./bootstrap.sh
+      - ./configure
+      - make
+  install:
+    dir: submodules/yara
+    cmds:
+      - task: build-tools
+      - task: compile
+      - sudo make install
+      - make check
+      - echo "/usr/local/bin" | sudo tee -a /etc/ld.so.conf.d/yara.conf
+      - sudo ldconfig
+
