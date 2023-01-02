@@ -5,7 +5,7 @@ dotenv: ['.env']
 vars:
   PROJECT_ROOT:
     sh: "echo $PWD"
-  YARA_JAVA_ROOT: "{{.PROJECT_ROOT}}/yara-java"
+  YARA_JAVA_ROOT: "{{.PROJECT_ROOT}}/yara-binding"
   YARA_JAVA_SRC: "{{.YARA_JAVA_ROOT}}/src/main/java"
   YARA_JAVA_RESOURCES: "{{.YARA_JAVA_ROOT}}/src/main/resources"
   YARA_HEADERS: "{{.PROJECT_ROOT}}/submodules/yara/libyara/include"

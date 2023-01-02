@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.virustotal.yara</groupId>
-    <artifactId>yara-java</artifactId>
+    <artifactId>yara-binding</artifactId>
     <version>0.0.1</version>
 
     <properties>

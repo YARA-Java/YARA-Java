@@ -9,7 +9,7 @@ tasks:
     dir: submodules/jextract
     cmds:
       - gradle -Dorg.gradle.java.home="${GRADLE_JAVA_HOME}" -Pjdk20_home="${JAVA_HOME}" -Pllvm_home="${LLVM_HOME}" -Pjtreg_home="${JTREG_HOME}" jtreg
-  yara-java:
+  yara-binding:
     dir: submodules/jextract
     cmds:
       - sh -c "(
@@ -17,6 +17,6 @@ tasks:
         -l yara
         --source
         --output "${YARA_JAVA_SRC}"
-        --target-package com.virustotal.yara
+        --target-package com.virustotal.yara.binding
         "${YARA_HEADERS}/yara.h"
         )"
