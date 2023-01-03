@@ -15,8 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.virustotal.yara.binding.yara_h.C_POINTER;
-import static com.virustotal.yara.binding.yara_h.ERROR_SUCCESS;
+import static com.virustotal.yara.binding.yara_h.*;
 import static com.virustotal.yara.binding.yara_h_1.*;
 import static com.virustotal.yara.binding.yara_h_2.YR_VERSION;
 
@@ -24,8 +23,9 @@ public class YaraBindingTests {
     public static final int NULL_CHAR = 1;
     public static final int ZERO_ERRORS = 0;
 
-    private static final Path YARA_RULES_SOURCE_DOC_DIR = Paths.get("src","test","resources", "yara", "rules", "source", "doc");
-    private static final Path YARA_RULES_BIN_DOC_DIR = Paths.get("src","test","resources", "yara", "rules", "bin", "doc");
+    private static final Path YARA_RULES_SOURCE_DOC_DIR = Paths.get("src", "test", "resources", "yara", "rules", "source", "doc");
+    private static final Path YARA_RULES_BIN_DOC_DIR = Paths.get("src", "test", "resources", "yara", "rules", "bin", "doc");
+    private static final Path YARA_SCANNER_FILES_DIR = Paths.get("src", "test", "resources", "yara", "scanner", "files");
 
     @BeforeAll
     public static void init() {
@@ -163,6 +163,55 @@ public class YaraBindingTests {
             Assertions.assertEquals(ERROR_SUCCESS(), scannerCreated);
 
             MemorySegment yaraScanner$ = yaraScanner$$.get(C_POINTER, 0); // YR_SCANNER*
+
+            int rulesDestroyed = yr_rules_destroy(yaraRules$);
+            Assertions.assertEquals(ERROR_SUCCESS(), rulesDestroyed);
+
+            yr_scanner_destroy(yaraScanner$);
+        }
+    }
+
+    @Test
+    public void testYaraScannerSetCallbackAndScanFile() {
+        try (Arena arena = Arena.openConfined()) {
+            MemorySegment yaraRulesFilename$ = arena.allocateUtf8String(YARA_RULES_BIN_DOC_DIR + "/yara-rules.yara.bin"); // char*
+            MemorySegment yaraRules$$ = arena.allocate(C_POINTER); // YR_RULES**
+
+            int loaded = yr_rules_load(yaraRulesFilename$, yaraRules$$);
+            Assertions.assertEquals(ERROR_SUCCESS(), loaded);
+
+            MemorySegment yaraRules$ = yaraRules$$.get(C_POINTER, 0); // YR_RULES*
+
+            MemorySegment yaraScanner$$ = arena.allocate(C_POINTER); // YR_SCANNER**
+
+            int scannerCreated = yr_scanner_create(yaraRules$, yaraScanner$$);
+            Assertions.assertEquals(ERROR_SUCCESS(), scannerCreated);
+
+            MemorySegment yaraScanner$ = yaraScanner$$.get(C_POINTER, 0); // YR_SCANNER*
+
+            // Set required callback function
+            // https://github.com/VirusTotal/yara/blob/master/tests/test-api.c#L573
+            // https://github.com/VirusTotal/yara/blob/master/tests/util.c#L315
+            MemorySegment countCallback = YR_CALLBACK_FUNC.allocate(new YR_CALLBACK_FUNC() {
+                                                                        @Override
+                                                                        public int apply(MemorySegment context, int message, MemorySegment message_data, MemorySegment user_data) {
+                                                                            if (message == CALLBACK_MSG_TOO_MANY_MATCHES()) {
+
+                                                                            } else if (message == CALLBACK_MSG_RULE_MATCHING()) {
+
+                                                                            } else if (message == CALLBACK_MSG_RULE_NOT_MATCHING()) {
+
+                                                                            }
+
+                                                                            return CALLBACK_CONTINUE();
+                                                                        }
+                                                                    }, arena.scope());
+
+            yr_scanner_set_callback(yaraScanner$, countCallback, null);
+
+            MemorySegment foobarTxtFilename$ = arena.allocateUtf8String(YARA_SCANNER_FILES_DIR + "/foobar.txt"); // char*
+            int scanResult = yr_scanner_scan_file(yaraScanner$, foobarTxtFilename$);
+            Assertions.assertEquals(ERROR_SUCCESS(), scanResult);
 
             int rulesDestroyed = yr_rules_destroy(yaraRules$);
             Assertions.assertEquals(ERROR_SUCCESS(), rulesDestroyed);
