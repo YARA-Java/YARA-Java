@@ -1,0 +1,4 @@
+foobar
+Foobar
+FooBar
+FOOBAR
