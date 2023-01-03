@@ -195,6 +195,8 @@ public class YaraBindingTests {
             MemorySegment countCallback = YR_CALLBACK_FUNC.allocate(new YR_CALLBACK_FUNC() {
                                                                         @Override
                                                                         public int apply(MemorySegment context, int message, MemorySegment message_data, MemorySegment user_data) {
+                                                                            System.out.println("Callback Function apply method");
+
                                                                             if (message == CALLBACK_MSG_TOO_MANY_MATCHES()) {
 
                                                                             } else if (message == CALLBACK_MSG_RULE_MATCHING()) {
@@ -207,7 +209,15 @@ public class YaraBindingTests {
                                                                         }
                                                                     }, arena.scope());
 
-            yr_scanner_set_callback(yaraScanner$, countCallback, null);
+            // void* user_data
+            // A user-defined pointer.
+            // This pointer is not touched by YARA,
+            // it's just a way for your program to
+            // pass arbitrary data to the callback function.
+            MemorySegment userData$ = MemorySegment.NULL; // void*
+
+            // https://yara.readthedocs.io/en/stable/capi.html#c.yr_scanner_set_callback
+            yr_scanner_set_callback(yaraScanner$, countCallback, userData$);
 
             MemorySegment foobarTxtFilename$ = arena.allocateUtf8String(YARA_SCANNER_FILES_DIR + "/foobar.txt"); // char*
             int scanResult = yr_scanner_scan_file(yaraScanner$, foobarTxtFilename$);
