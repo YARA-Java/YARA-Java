@@ -94,7 +94,7 @@ public class YaraBindingTests {
     }
 
     @Test
-    public void testYaraCompilerGetSaveAndDestroyRules(){
+    public void testYaraCompilerGetSaveAndDestroyRules() {
         try (Arena arena = Arena.openConfined()) {
             MemorySegment compilerAddress = arena.allocate(C_POINTER); // YR_COMPILER**
             int created = yr_compiler_create(compilerAddress);
@@ -147,8 +147,8 @@ public class YaraBindingTests {
     }
 
     @Test
-    public void testYaraScannerCreateAndDestroy(){
-        try (Arena arena = Arena.openConfined()){
+    public void testYaraScannerCreateAndDestroy() {
+        try (Arena arena = Arena.openConfined()) {
             MemorySegment yaraRulesFilename$ = arena.allocateUtf8String(YARA_RULES_BIN_DOC_DIR + "/yara-rules.yara.bin"); // char*
             MemorySegment yaraRules$$ = arena.allocate(C_POINTER); // YR_RULES**
 
@@ -193,21 +193,22 @@ public class YaraBindingTests {
             // https://github.com/VirusTotal/yara/blob/master/tests/test-api.c#L573
             // https://github.com/VirusTotal/yara/blob/master/tests/util.c#L315
             MemorySegment countCallback = YR_CALLBACK_FUNC.allocate(new YR_CALLBACK_FUNC() {
-                                                                        @Override
-                                                                        public int apply(MemorySegment context, int message, MemorySegment message_data, MemorySegment user_data) {
-                                                                            System.out.println("Callback Function apply method");
+                @Override
+                public int apply(MemorySegment context, int message, MemorySegment message_data, MemorySegment user_data) {
+                    System.out.println("Callback Function apply method");
 
-                                                                            if (message == CALLBACK_MSG_TOO_MANY_MATCHES()) {
+                    if (message == CALLBACK_MSG_TOO_MANY_MATCHES()) {
+                        System.out.println("Callback Too Many Matching Rule");
+                    } else if (message == CALLBACK_MSG_RULE_MATCHING()) {
+                        System.out.println("Callback Matching Rule");
+                    } else if (message == CALLBACK_MSG_RULE_NOT_MATCHING()) {
+                        System.out.println("Callback Not Matching Rule");
+                    }
 
-                                                                            } else if (message == CALLBACK_MSG_RULE_MATCHING()) {
 
-                                                                            } else if (message == CALLBACK_MSG_RULE_NOT_MATCHING()) {
-
-                                                                            }
-
-                                                                            return CALLBACK_CONTINUE();
-                                                                        }
-                                                                    }, arena.scope());
+                    return CALLBACK_CONTINUE();
+                }
+            }, arena.scope());
 
             // void* user_data
             // A user-defined pointer.
